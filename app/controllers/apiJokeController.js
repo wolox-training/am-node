@@ -1,6 +1,7 @@
 const bcryptjs = require("bcryptjs");
 const db = require('../models/index') 
 const { apiJokeService } = require("../services/apiJokeService");
+const userDAO = require("../services/userDAO");
 
 exports.controller = {
 
@@ -25,8 +26,8 @@ exports.controller = {
 
             newUser.password = bcryptjs.hashSync(req.body.password, 10);
 
-            await db.User.create(newUser);
-
+            await userDAO.postUser(newUser);
+            
             res.status(201).json({newUser})
 
         } catch (error) {
