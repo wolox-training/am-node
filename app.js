@@ -7,6 +7,7 @@ const routes = require('./app/routes');
 const errors = require('./app/middlewares/errors');
 const documentation = require('./documentation');
 const logger = require('./app/logger');
+const  swagger  = require('./swagger');
 
 const DEFAULT_BODY_SIZE_LIMIT = 1024 * 1024 * 10;
 const DEFAULT_PARAMETER_LIMIT = 10000;
@@ -29,7 +30,7 @@ app.use(bodyParser.json(bodyParserJsonConfig()));
 app.use(bodyParser.urlencoded(bodyParserUrlencodedConfig()));
 app.use(expressRequestIdMiddleware());
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(documentation));
-
+swagger('/swagger', app);
 if (!config.isTesting) app.use(expressMiddleware({ loggerFn: logger.info }));
 
 routes.init(app);

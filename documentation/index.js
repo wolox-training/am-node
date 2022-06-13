@@ -8,8 +8,8 @@ module.exports = {
   openapi: '3.0.1',
   info: {
     version: '0.1.0',
-    title: 'w-training',
-    description: 'w-training',
+    title: 'Training ExpressJs Andres Murgo',
+    description: 'Api que expone endpoint de Sign Up ',
     termsOfService: '',
     contact: {
       name: 'Wolox',

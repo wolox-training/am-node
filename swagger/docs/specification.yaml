@@ -1,0 +1,70 @@
+openapi: 3.0.1
+info:
+    title: Api backend
+    description: Api que expone endpoint de Sign Up 
+    contact:
+        name: Andres Murgo
+        email: andres.murgo@accenture.com
+    version: 0.1.0
+servers:
+    - url: http://localhost:8081
+tags:
+    - name: Api Bacckend
+paths:
+    /api/create/user:
+        post:
+            tags:
+                - Login
+            summary: Login
+            description: login 
+            requestBody:
+              description: Information sent in the validation method
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/body'
+                  example:
+                          firstName: Andres
+                          lastName: Murgo
+                          email: andres1@gmail.com
+                          password: '12345678'
+              required: true
+            responses:
+                200:
+                    description: OK
+                    content:
+                        application/json:
+                            example:
+                                      newUser:
+                                         firstName: Andres
+                                         lastName: Murgo
+                                         email: andres1@gmail.com
+                                         password: $2a$10$tii1XH66BeMYc4rVANIJoe2DdhUm/ncxWtxe23BlpzqaXSRZD.nKS
+                                       
+                400:
+                    description: Bad Request
+                    content:
+                        application/json:
+                            example:
+                                    errors:
+                                      - value: andres1gmail.com
+                                        msg: El email no es valido
+                                        param: email
+                                        location: body
+
+components:
+    schemas:
+        body:
+            type: object
+            properties:
+                codigo:
+                    type: array
+                    items: 
+                        type: string
+
+x-version-control:
+    '0.1.0':
+        date: 02/04/2022
+        editor: SAN
+        description: 'The swagger is created, non-stable beta version of the API'
+        changes: []

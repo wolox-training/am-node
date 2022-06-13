@@ -1,33 +1,6 @@
 module.exports = {
-  '/users': {
-    get: {
-      tags: ['CRUD operations'],
-      description: 'Get users',
-      operationId: 'getUsers',
-      parameters: [
-        {
-          name: 'page',
-          in: 'query',
-          schema: {
-            type: 'integer',
-            default: 1
-          },
-          required: false
-        }
-      ],
-      responses: {
-        200: {
-          description: 'Users were obtained',
-          content: {
-            'application/json': {
-              schema: {
-                $ref: '#/components/schemas/Users'
-              }
-            }
-          }
-        }
-      }
-    },
+  '/api/create/user': {
+
     post: {
       tags: ['CRUD operations'],
       description: 'Create user',
@@ -55,8 +28,14 @@ module.exports = {
                 $ref: '#/components/schemas/Error'
               },
               example: {
-                message: 'User´s email already exists',
-                internal_code: 'invalid_parameters'
+                "errors": [
+                  {
+                      "value": "andres1gmail.com",
+                      "msg": "El email no es valido",
+                      "param": "email",
+                      "location": "body"
+                  }
+              ]
               }
             }
           }
