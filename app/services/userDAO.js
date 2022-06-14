@@ -4,6 +4,10 @@ const userDAO = {
     getAllUser: () => {
         return db.User.findAll();
     },
+
+    getById: (id) => {
+        return db.User.findByPk(id);
+    },
     
     getUser: (param) => {
         return db.User.findOne({ where: { email: param } });
