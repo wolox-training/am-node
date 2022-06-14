@@ -1,4 +1,5 @@
 const bcryptjs = require("bcryptjs");
+const { paginateResults } = require("../helpers/paginateResults");
 const userDAO = require("../services/userDAO");
 
 exports.userController = {
@@ -9,7 +10,9 @@ exports.userController = {
 
             const users = await userDAO.getAllUser();
 
-            res.status(200).json({users});
+            const results = paginateResults(req, users);
+
+            res.status(200).json(results);
 
         } catch (error) {
             next()
