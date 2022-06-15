@@ -8,8 +8,10 @@ const { validarCampos } = require('./middlewares/validar-campos');
 
 const  {validation}  = require('./middlewares/validation');
 const  {validationSignIn}  = require('./middlewares/validation');
+const  {validationWeets}  = require('./middlewares/validation');
 const { validarJWT } = require('./middlewares/validar-jwt');
 const { tieneRole } = require('./middlewares/validar-roles');
+const { weetController } = require('./controllers/weetController');
 
 
 exports.init = app => {
@@ -18,9 +20,9 @@ exports.init = app => {
   app.get('/api/users',validarJWT, userController.allUser);
   app.post('/api/create/user',validation,validarCampos, userController.signUp);
   app.post('/users/sessions',validationSignIn,validarCampos,loginController.signIn);
-  app.post('/admin/users',validarJWT,tieneRole('admin'), validationSignIn,validarCampos,loginController.signInAdmin);
-
-
+  app.post('/admin/users',validationSignIn,validarCampos,loginController.signInAdmin);
+  app.post('/weets',validarJWT,tieneRole('admin'),validarCampos,weetController.createWeet);
+  app.get('/weets',validarJWT,weetController.allWeets);
 
   // app.put('/endpoint/put/path', [], controller.methodPUT);
 };
