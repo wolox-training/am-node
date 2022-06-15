@@ -1,10 +1,11 @@
 const bcryptjs = require("bcryptjs");
+const logger = require("../logger/index");
 const { paginateResults } = require("../helpers/paginateResults");
 const userDAO = require("../services/userDAO");
 
 exports.userController = {
 
-    methodGET: async (req, res, next) => {
+    allUser: async (req, res, next) => {
 
         try {
 
@@ -12,14 +13,18 @@ exports.userController = {
 
             const results = paginateResults(req, users);
 
+            logger.info(`GET /api/users Successfully `);
+
             res.status(200).json(results);
 
         } catch (error) {
-            next()
+            logger.error('GET /api/users Error: ', error);
+            return res.status(500).json({errors: error });
+
         }
     },
 
-    methodPOST: async (req, res, next) => {
+    signUp: async (req, res, next) => {
 
         try {
 
@@ -28,11 +33,13 @@ exports.userController = {
             newUser.password = bcryptjs.hashSync(req.body.password, 10);
 
             await userDAO.postUser(newUser);
-            
-            res.status(201).json({newUser})
+            logger.info('POST /api/create/user Successfully');
+
+            res.status(201).json({ newUser })
 
         } catch (error) {
-            next()
+            logger.error('POST /api/create/user Error: ', error);
+            return res.status(500).json({errors: error });
         }
     }
 }
