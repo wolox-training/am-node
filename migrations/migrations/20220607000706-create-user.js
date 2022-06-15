@@ -20,6 +20,10 @@ module.exports = {
       password: {
         type: Sequelize.STRING
       },
+      role:{
+        type: Sequelize.STRING,
+        defaultValue: 'regular'
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

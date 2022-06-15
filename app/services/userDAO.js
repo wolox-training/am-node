@@ -9,12 +9,15 @@ const userDAO = {
         return db.User.findByPk(id);
     },
     
-    getUser: (param) => {
-        return db.User.findOne({ where: { email: param } });
+    getUser: async(param) => {
+       return  await db.User.findOne({ where: { email: param } });
     },
 
     postUser: (user) => {
         return db.User.create(user);
+    },
+    updateUser:async (user) => {
+        return await db.User.update({...user,role:'admin'}, { where: { id: user.id } });
     }
 }
 
