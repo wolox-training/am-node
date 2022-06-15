@@ -30,7 +30,6 @@ exports.loginController = {
 
             res.status(200).json({
                 message: 'Login correcto',
-                user,
                 token
             });
 
