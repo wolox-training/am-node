@@ -31,11 +31,6 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: 'developer'
       }
     },
-    {
-      tableName: 'users',
-      timestamps: false,
-      underscored: true
-    }
   );
   return User;
 };

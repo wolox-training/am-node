@@ -30,5 +30,10 @@ exports.validationSignIn = [
     check('password', 'El password es obligatorio').not().isEmpty(),
 ]
 
+exports.validationQuality = [
+    check('score', 'El score es obligatorio').not().isEmpty()
+]
+
+
 
 
