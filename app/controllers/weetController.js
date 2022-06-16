@@ -1,7 +1,6 @@
 
 const logger = require("../logger/index");
 const { paginateResults } = require("../helpers/paginateResults");
-const userDAO = require("../services/userDAO");
 const weetDAO = require("../services/weetDAO");
 const { apiJokeService } = require("../services/apiJokeService");
 
