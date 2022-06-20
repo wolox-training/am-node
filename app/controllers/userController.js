@@ -2,6 +2,7 @@ const bcryptjs = require("bcryptjs");
 const logger = require("../logger/index");
 const { paginateResults } = require("../helpers/paginateResults");
 const userDAO = require("../services/userDAO");
+const { userEmail } = require("../helpers/userEmail");
 
 exports.userController = {
 
@@ -19,7 +20,7 @@ exports.userController = {
 
         } catch (error) {
             logger.error('GET /api/users Error: ', error);
-            return res.status(500).json({errors: error });
+            return res.status(500).json({ errors: error });
 
         }
     },
@@ -32,14 +33,28 @@ exports.userController = {
 
             newUser.password = bcryptjs.hashSync(req.body.password, 10);
 
-            await userDAO.postUser(newUser);
+            const user = await userDAO.postUser(newUser);
+
+            if (user) {
+
+                const emailParams = {
+                    from: 'Welcome New Joiners <welcome@wolox>',
+                    to: user.email,
+                    subject: 'Welcome to Wolox',
+                    text: 'Welcome to Wolox',
+                    html: '<h1>Welcome to Wolox</h1>'
+                };
+
+                await userEmail(emailParams);
+
+            }
             logger.info('POST /api/create/user Successfully');
 
             res.status(201).json({ newUser })
 
         } catch (error) {
             logger.error('POST /api/create/user Error: ', error);
-            return res.status(500).json({errors: error });
+            return res.status(500).json({ errors: error });
         }
     }
 }
