@@ -2,6 +2,7 @@ const userDAO = require("../services/userDAO");
 const bcryptjs = require('bcryptjs');
 const { generarJWT } = require("../helpers/generarJWT");
 const logger = require("../logger/index");
+const sessionDAO = require("../services/sessionDAO");
 
 
 exports.loginController = {
@@ -34,6 +35,14 @@ exports.loginController = {
 
             const token = await generarJWT(user.id);
 
+            const session = {
+                token,
+                id: user.id,
+            }
+
+            const newSession = await sessionDAO.create(session);
+            console.log('----',newSession);
+            
             logger.info(`POST /users/sessions Successfully`);
 
             res.status(200).json({
@@ -46,7 +55,7 @@ exports.loginController = {
             logger.error('POST /users/sessions Error: ', error);
             res.status(500).json({
                 message: 'Error del servidor',
-                errors:error
+                errors: error
             });
 
         }
@@ -78,7 +87,7 @@ exports.loginController = {
                 });
             }
 
-            user.role == 'regular' && await userDAO.updateUser(user) 
+            user.role == 'regular' && await userDAO.updateUser(user)
 
             const token = await generarJWT(user.id);
 
@@ -97,6 +106,41 @@ exports.loginController = {
         }
 
 
+    },
+
+    destroySession: async (req, res) => { 
+        try {
+           
+            
+            const { id } = req.user;
+            const session = await sessionDAO.getSession(id);
+            console.log(session);
+            
+            if (!session) {
+                logger.info('POST /users/sessions/invalidate_all Error: Session not found');
+                return res.status(400).json({
+                    message: 'Session no encontrada'
+                });
+            }
+            // console.log(session);
+            
+            // console.log('sessionToken',session.token);
+            
+            const destroy = await sessionDAO.destroy(session.token);
+            console.log(destroy);
+            
+
+            logger.info('POST /users/sessions/invalidate_all Successfully');
+            res.status(200).json({
+                message: 'Session invalidada'
+            });
+        } catch (error) {
+            logger.error('POST /users/sessions/invalidate_all Error: ', error);
+            res.status(500).json({
+                message: 'Error del servidor'
+            });
+        }
     }
+
 }
 

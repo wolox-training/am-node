@@ -18,11 +18,10 @@ exports.init = app => {
   app.get('/api/users', validarJWT, userController.allUser);
   app.post('/api/create/user', validation, validarCampos, userController.signUp);
   app.post('/users/sessions', validationSignIn, validarCampos, loginController.signIn);
+  app.post('/users/sessions/invalidate_all', validarJWT, loginController.destroySession);
   app.post('/admin/users', validationSignIn, validarCampos, loginController.signInAdmin);
   app.post('/weets', validarJWT, tieneRole('admin'), validarCampos, weetController.createWeet);
   app.get('/weets', validarJWT, weetController.allWeets);
   app.post('/weets/:id/ratings',validarJWT,validationQuality,validarCampos, qualityController.create)
 
-
-  // app.put('/endpoint/put/path', [], controller.methodPUT);
 };
