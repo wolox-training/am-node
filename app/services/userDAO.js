@@ -1,8 +1,19 @@
 const db = require('../models/index');
 
 const userDAO = {
-    getAllUser: () => {
-        return db.User.findAll();
+    getAllUser: async ({ offset, limit }) => {
+        try {
+
+            const users = await db.User.findAll({
+                attributes: ['id', 'firstName', 'lastName', 'email'],
+                offset,
+                limit
+
+            });
+            return users;
+        } catch (error) {
+            return error
+        }
     },
 
     getById: (id) => {
@@ -20,7 +31,7 @@ const userDAO = {
     },
     updatePosition: async (id, position) => {
         return await db.User.update(
-            { position:position },
+            { position: position },
             {
                 where: { id },
                 returning: true,

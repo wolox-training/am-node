@@ -1,8 +1,15 @@
 const db = require('../models/index');
 
 const weetDAO = {
-    getAllWeets: () => {
-        return db.Weet.findAll();
+    getAllWeets: async ({ offset, limit }) => {
+        try {
+            const weets = await db.Weet.findAll({ offset, limit });
+            return weets;
+
+        } catch (error) {
+            return error
+        }
+
     },
 
     getById: (id) => {
@@ -12,7 +19,7 @@ const weetDAO = {
     create: (weet) => {
         return db.Weet.create(weet);
     },
- 
+
 }
 
 module.exports = weetDAO;

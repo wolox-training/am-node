@@ -1,6 +1,5 @@
 
 const logger = require("../logger/index");
-const { paginateResults } = require("../helpers/paginateResults");
 const weetDAO = require("../services/weetDAO");
 const { apiJokeService } = require("../services/apiJokeService");
 
@@ -28,11 +27,13 @@ exports.weetController = {
     allWeets: async (req, res, next) => {
 
         try {
+            const offset = Number(req.query.offset) > 0 ? Number(req.query.offset) : 0;
+            const limit = Number(req.query.limit) > 0 ? Number(req.query.limit) : 3;
 
-            const weets = await weetDAO.getAllWeets();
+            const weets = await weetDAO.getAllWeets({ offset, limit });
             logger.info(`Weets retrieved successfully`);
-            const paginatedResults = paginateResults(req, weets);
-            res.status(200).json({ paginatedResults });
+          
+            res.status(200).json({ weets });
 
         } catch (error) {
             logger.error(`Error getting all weets: ${error}`);

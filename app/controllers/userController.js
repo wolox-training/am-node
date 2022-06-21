@@ -1,22 +1,23 @@
 const bcryptjs = require("bcryptjs");
 const logger = require("../logger/index");
-const { paginateResults } = require("../helpers/paginateResults");
+
 const userDAO = require("../services/userDAO");
 const { userEmail } = require("../helpers/userEmail");
 
 exports.userController = {
 
-    allUser: async (req, res, next) => {
+    allUser: async (req, res) => {
 
         try {
 
-            const users = await userDAO.getAllUser();
+            const offset = Number(req.query.offset) > 0 ? Number(req.query.offset) : 0;
+            const limit = Number(req.query.limit) > 0 ? Number(req.query.limit) : 3;
 
-            const results = paginateResults(req, users);
+            const users = await userDAO.getAllUser({ offset, limit });
 
             logger.info(`GET /api/users Successfully `);
 
-            res.status(200).json(results);
+            res.status(200).json({users});
 
         } catch (error) {
             logger.error('GET /api/users Error: ', error);
