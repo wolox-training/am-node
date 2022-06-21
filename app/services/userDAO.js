@@ -17,26 +17,47 @@ const userDAO = {
     },
 
     getById: (id) => {
-        return db.User.findByPk(id);
+        try {
+            return db.User.findByPk(id);
+
+        } catch (error) {
+            return error
+        }
     },
 
     getUser: async (param) => {
-        return await db.User.findOne({ where: { email: param } });
+        try {
+            return await db.User.findOne({ where: { email: param } });
+        } catch (error) {
+            return error
+        }
     },
     postUser: (user) => {
-        return db.User.create(user);
+        try {
+            return db.User.create(user);
+        } catch (error) {
+            return error
+        }
     },
     updateUser: async (user) => {
-        return await db.User.update({ ...user, role: 'admin' }, { where: { id: user.id } });
+        try {
+            return await db.User.update({ ...user, role: 'admin' }, { where: { id: user.id } });
+        } catch (error) {
+            return error
+        }
     },
     updatePosition: async (id, position) => {
-        return await db.User.update(
-            { position: position },
-            {
-                where: { id },
-                returning: true,
-                plain: true
-            });
+        try {
+            return await db.User.update(
+                { position: position },
+                {
+                    where: { id },
+                    returning: true,
+                    plain: true
+                });
+        } catch (error) {
+            return error
+        }
     }
 }
 

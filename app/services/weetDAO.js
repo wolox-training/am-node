@@ -9,15 +9,22 @@ const weetDAO = {
         } catch (error) {
             return error
         }
-
     },
 
     getById: (id) => {
-        return db.Weet.findByPk(id);
+        try {
+            return db.Weet.findByPk(id);
+        } catch (error) {
+            return error
+        }
     },
 
     create: (weet) => {
-        return db.Weet.create(weet);
+        try {
+            return db.Weet.create(weet);
+        } catch (error) {
+            return error
+        }
     },
 
 }
