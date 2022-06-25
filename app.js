@@ -8,6 +8,8 @@ const errors = require('./app/middlewares/errors');
 const documentation = require('./documentation');
 const logger = require('./app/logger');
 const  swagger  = require('./swagger');
+const { auth } = require('express-openid-connect');
+const { configAuth } = require('./app/helpers/auth0');
 
 const DEFAULT_BODY_SIZE_LIMIT = 1024 * 1024 * 10;
 const DEFAULT_PARAMETER_LIMIT = 10000;
@@ -26,6 +28,7 @@ const bodyParserUrlencodedConfig = () => ({
 const app = express();
 
 // Client must send "Content-Type: application/json" header
+app.use(auth(configAuth));
 app.use(bodyParser.json(bodyParserJsonConfig()));
 app.use(bodyParser.urlencoded(bodyParserUrlencodedConfig()));
 app.use(expressRequestIdMiddleware());

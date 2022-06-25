@@ -28,14 +28,8 @@ module.exports = {
                 $ref: '#/components/schemas/Error'
               },
               example: {
-                "errors": [
-                  {
-                      "value": "andres1gmail.com",
-                      "msg": "El email no es valido",
-                      "param": "email",
-                      "location": "body"
-                  }
-              ]
+                message: 'User´s email already exists',
+                internal_code: 'invalid_parameters'
               }
             }
           }
