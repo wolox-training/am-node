@@ -14,10 +14,7 @@ exports.qualityController = {
             const { id} = req.params;
             const { id: idUser } = req.user.dataValues;
             const idWeet = Number(id)
-            console.log(score);
-            
-            console.log(idWeet);
-            console.log(idUser);
+
             const qualityExist = await qualificationDAO.getOne(idUser, idWeet);
 
             

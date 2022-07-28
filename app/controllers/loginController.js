@@ -40,8 +40,8 @@ exports.loginController = {
                 id: user.id,
             }
 
-            const newSession = await sessionDAO.create(session);
-            console.log('----',newSession);
+            await sessionDAO.create(session);
+           
             
             logger.info(`POST /users/sessions Successfully`);
 
@@ -114,7 +114,7 @@ exports.loginController = {
             
             const { id } = req.user;
             const session = await sessionDAO.getSession(id);
-            console.log(session);
+            
             
             if (!session) {
                 logger.info('POST /users/sessions/invalidate_all Error: Session not found');
@@ -122,14 +122,10 @@ exports.loginController = {
                     message: 'Session no encontrada'
                 });
             }
-            // console.log(session);
+   
             
-            // console.log('sessionToken',session.token);
+            await sessionDAO.destroy(session.token);
             
-            const destroy = await sessionDAO.destroy(session.token);
-            console.log(destroy);
-            
-
             logger.info('POST /users/sessions/invalidate_all Successfully');
             res.status(200).json({
                 message: 'Session invalidada'
